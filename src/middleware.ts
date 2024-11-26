@@ -9,9 +9,11 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL(getUrl('/app')))
   }
 
+  /*
   if (pathname.includes('/app') && !token) {
     return NextResponse.redirect(new URL(getUrl('/auth')))
   }
+  */
 }
 
 export const config = {
