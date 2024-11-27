@@ -10,17 +10,17 @@ export default function Home() {
       {/* Navigation */}
       <nav className="bg-gray-800 py-4">
         <div className="container mx-auto px-4 flex justify-between items-center">
-          <a href="#" className="text-2xl font-bold text-white">BarberCo</a>
+          <a href="#" className="text-2xl font-bold text-white">Caio Ibraim</a>
           <div className="hidden md:flex space-x-4">
             <a href="#" className="text-gray-300 hover:text-white">Home</a>
-            <a href="#" className="text-gray-300 hover:text-white">Services</a>
-            <a href="#" className="text-gray-300 hover:text-white">About</a>
-            <a href="#" className="text-gray-300 hover:text-white">Contact</a>
+            <a href="#" className="text-gray-300 hover:text-white">Treinamentos</a>
+            <a href="#" className="text-gray-300 hover:text-white">Sobre</a>
+            <a href="#" className="text-gray-300 hover:text-white">Contato</a>
           </div>
           <Button variant="outline" className="md:hidden">
             <Menu className="h-6 w-6" />
           </Button>
-          <Button className="hidden md:block">Book Now</Button>
+          <Button className="hidden md:block">Entrar</Button>
         </div>
       </nav>
 
@@ -28,15 +28,15 @@ export default function Home() {
       <section className="relative h-[600px] flex items-center justify-center text-center">
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('/placeholder.svg?height=600&width=800')" }}
+          style={{ backgroundImage: "url('/1.png?height=600&width=800')" }}
         >
           <div className="absolute inset-0 bg-black bg-opacity-60"></div>
         </div>
         <div className="relative z-10 max-w-3xl mx-auto px-4">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4">Experience the Art of Grooming</h1>
-          <p className="text-xl mb-8">Discover premium barber services tailored just for you</p>
+          <h1 className="text-5xl md:text-6xl font-bold mb-4">Treinamento Indie Hacker</h1>
+          <p className="text-xl mb-8">Esteja sempre atualizado, tenha acesso a um treinamento personalizado</p>
           <Button size="lg" className="bg-yellow-500 hover:bg-yellow-600 text-gray-900">
-            Book Your Appointment
+            Agende um treinamento
           </Button>
         </div>
       </section>
@@ -44,22 +44,20 @@ export default function Home() {
       {/* Services Section */}
       <section className="py-16 bg-gray-800">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">Our Services</h2>
+          <h2 className="text-3xl font-bold text-center mb-12">Treinamentos</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { name: "Classic Haircut", icon: Scissors, price: "$25" },
-              { name: "Beard Trim", icon: Scissors, price: "$15" },
-              { name: "Hot Towel Shave", icon: Users, price: "$30" },
-              { name: "Hair Coloring", icon: Users, price: "$50" },
-              { name: "Kids Haircut", icon: Users, price: "$20" },
-              { name: "Hair & Beard Combo", icon: Scissors, price: "$40" },
+              { name: "Indie Hacker", icon: Scissors, price: "R$ 25" },
+              { name: "Supabase", icon: Scissors, price: "R$ 15" },
+              { name: "React JS Básico", icon: Users, price: "$30" },
+              
             ].map((service, index) => (
               <Card key={index} className="bg-gray-700">
                 <CardContent className="p-6 flex flex-col items-center text-center">
                   <service.icon className="h-12 w-12 mb-4 text-yellow-500" />
                   <h3 className="text-xl font-semibold mb-2">{service.name}</h3>
-                  <p className="text-gray-400 mb-4">Starting at {service.price}</p>
-                  <Button variant="outline">Book Now</Button>
+                  <p className="text-gray-400 mb-4">Preço {service.price}</p>
+                  <Button variant="outline">Agendar</Button>
                 </CardContent>
               </Card>
             ))}
@@ -68,7 +66,7 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 bg-gray-900">
+      {/* <section className="py-16 bg-gray-900">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12">Why Choose Us</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -87,10 +85,10 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Testimonials Section */}
-      <section className="py-16 bg-gray-800">
+      {/* <section className="py-16 bg-gray-800">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12">What Our Clients Say</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -121,7 +119,7 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA Section */}
       <section className="py-16 bg-yellow-500 text-gray-900">
