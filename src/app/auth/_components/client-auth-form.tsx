@@ -11,6 +11,9 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { toast } from "@/components/ui/use-toast"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Facebook, Loader2, Mail } from 'lucide-react'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { useRouter } from 'next/navigation' 
+
 
 const signInSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -24,6 +27,9 @@ const signUpSchema = signInSchema.extend({
 export default function ClientAuthForm() {
   const [isLoading, setIsLoading] = useState(false)
 
+  const router = useRouter()
+  // Mover o useRouter para dentro do componente, pois não pode ser utilizado fora dele.
+ 
   const signInForm = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -41,45 +47,72 @@ export default function ClientAuthForm() {
     },
   })
 
-  function onSignIn(values: z.infer<typeof signInSchema>) {
+  async function onSignIn(values: z.infer<typeof signInSchema>) {
     setIsLoading(true)
-    // Simulate API call
+    // Simular chamada de API
     setTimeout(() => {
       setIsLoading(false)
       toast({
-        title: "Sign In Successful",
-        description: "Welcome back!",
+        title: "Cadastro realizado com sucesso",
+        description: "Sua conta foi criada.",
       })
       console.log(values)
     }, 2000)
   }
 
-  function onSignUp(values: z.infer<typeof signUpSchema>) {
+  async function onSignUp(values: z.infer<typeof signUpSchema>) {
     setIsLoading(true)
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false)
-      toast({
-        title: "Sign Up Successful",
-        description: "Your account has been created.",
+    const supabase = createClientComponentClient()
+    const { email, password } = values
+
+    try {
+      const { error, data: { user } } = await supabase.auth.signUp({
+        email,
+        password,
       })
-      console.log(values)
-    }, 2000)
+      
+      if (user) {
+        setTimeout(() => {
+          setIsLoading(false)
+          toast({
+            title: "Usuário cadastrado com sucesso",
+            description: "Bem-vindo!",
+          })
+        }, 2000)
+
+        setTimeout(() => {
+          router.refresh() // Redirecionamento após o sucesso
+        }, 1000)
+      }
+
+      if(error){
+        setTimeout(() => {
+          setIsLoading(false)
+          toast({
+            title: "Erro ",
+            description: "Não foi possível cadastrar seus dados",
+          })
+        }, 2000)
+      }
+
+    } catch (error) {
+      console.log("CreateAccountForm", error)
+    }
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8">
-      <div className="container mx-auto px-4">
-        <Card className="w-full max-w-md mx-auto">
+    <div className="min-h-screen py-8">
+      <div className="container mx-auto">
+        <Card className="w-full  mx-auto">
           <CardHeader>
-            <CardTitle className="text-2xl font-bold text-center">Welcome</CardTitle>
-            <CardDescription className="text-center">Sign in to your account or create a new one</CardDescription>
+            <CardTitle className="text-2xl font-bold text-center">Bem vindo!</CardTitle>
+            <CardDescription className="text-center">Faça login em sua conta ou crie uma nova</CardDescription>
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="signin" className="w-full">
               <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="signin">Sign In</TabsTrigger>
-                <TabsTrigger value="signup">Sign Up</TabsTrigger>
+                <TabsTrigger value="signin">Fazer Login</TabsTrigger>
+                <TabsTrigger value="signup">Criar Conta</TabsTrigger>
               </TabsList>
               <TabsContent value="signin">
                 <Form {...signInForm}>
@@ -91,7 +124,7 @@ export default function ClientAuthForm() {
                         <FormItem>
                           <FormLabel>Email</FormLabel>
                           <FormControl>
-                            <Input placeholder="Enter your email" {...field} />
+                            <Input placeholder="Informe seu email" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -102,9 +135,9 @@ export default function ClientAuthForm() {
                       name="password"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Password</FormLabel>
+                          <FormLabel>Senha</FormLabel>
                           <FormControl>
-                            <Input type="password" placeholder="Enter your password" {...field} />
+                            <Input type="password" placeholder="Informe sua senha" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -114,17 +147,14 @@ export default function ClientAuthForm() {
                       {isLoading ? (
                         <>
                           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Signing In...
+                          Logando...
                         </>
                       ) : (
-                        'Sign In'
+                        'Entrar'
                       )}
                     </Button>
                   </form>
                 </Form>
-                <div className="mt-4 text-center">
-                  <a href="#" className="text-sm text-blue-600 hover:underline">Forgot password?</a>
-                </div>
               </TabsContent>
               <TabsContent value="signup">
                 <Form {...signUpForm}>
@@ -134,9 +164,9 @@ export default function ClientAuthForm() {
                       name="name"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Name</FormLabel>
+                          <FormLabel>Nome</FormLabel>
                           <FormControl>
-                            <Input placeholder="Enter your name" {...field} />
+                            <Input placeholder="Informe seu nome" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -149,7 +179,7 @@ export default function ClientAuthForm() {
                         <FormItem>
                           <FormLabel>Email</FormLabel>
                           <FormControl>
-                            <Input placeholder="Enter your email" {...field} />
+                            <Input placeholder="Informe seu email" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -160,9 +190,9 @@ export default function ClientAuthForm() {
                       name="password"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Password</FormLabel>
+                          <FormLabel>Senha</FormLabel>
                           <FormControl>
-                            <Input type="password" placeholder="Create a password" {...field} />
+                            <Input type="password" placeholder="Criar senha" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -172,52 +202,17 @@ export default function ClientAuthForm() {
                       {isLoading ? (
                         <>
                           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Signing Up...
+                          Cadastrando...
                         </>
                       ) : (
-                        'Sign Up'
+                        'Cadastrar'
                       )}
                     </Button>
                   </form>
                 </Form>
               </TabsContent>
             </Tabs>
-            <div className="mt-6">
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-background px-2 text-muted-foreground">
-                    Or continue with
-                  </span>
-                </div>
-              </div>
-              <div className="mt-6 grid grid-cols-2 gap-4">
-                <Button variant="outline">
-                  <Mail className="mr-2 h-4 w-4" />
-                  Google
-                </Button>
-                <Button variant="outline">
-                  <Facebook className="mr-2 h-4 w-4" />
-                  Facebook
-                </Button>
-              </div>
-            </div>
           </CardContent>
-          <CardFooter className="flex justify-center">
-            <p className="text-sm text-muted-foreground">
-              By signing in, you agree to our{' '}
-              <a href="#" className="underline underline-offset-4 hover:text-primary">
-                Terms of Service
-              </a>{' '}
-              and{' '}
-              <a href="#" className="underline underline-offset-4 hover:text-primary">
-                Privacy Policy
-              </a>
-              .
-            </p>
-          </CardFooter>
         </Card>
       </div>
     </div>

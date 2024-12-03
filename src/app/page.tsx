@@ -4,7 +4,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Calendar, Clock, MapPin, Menu, Scissors, Star, Users } from "lucide-react"
 
-export default function Home() {
+
+export default async function Home() {
+  
   return (
     <div className="bg-gray-900 text-gray-100 min-h-screen">
       {/* Navigation */}
